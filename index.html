@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Trading Pro</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101827;color:white;font-family:Arial,sans-serif}
+header{background:#17243a;padding:22px}
+h1{color:#39d9a0;margin:0}
+header p{color:#b8c5d8}
+main{padding:16px}
+.card{background:#1c2b42;padding:16px;border-radius:12px;margin-bottom:16px}
+h2{font-size:18px;color:#39d9a0}
+input,select,button{padding:12px;border:0;border-radius:7px;margin:5px 0;width:100%;font-size:15px}
+input,select{background:#fff;color:#111}
+button{background:#20bd89;color:#071b17;font-weight:bold}
+.stock{padding:12px;border-bottom:1px solid #394961}
+.small{color:#aab8ca;font-size:13px}
+footer{text-align:center;color:#91a2b8;padding:20px}
+</style>
+</head>
+<body>
+<header>
+<h1>MY TRADING PRO</h1>
+<p>Personal Stock Market Scanner</p>
+</header>
+<main>
+<div class="card">
+<h2>Stock Scanner</h2>
+<input id="symbol" placeholder="Stock name e.g. RELIANCE">
+<select id="setup">
+<option>VCP Breakout</option>
+<option>52 Week High Breakout</option>
+</select>
+<input id="entry" type="number" placeholder="Entry Price">
+<input id="sl" type="number" placeholder="Stop Loss">
+<button onclick="addStock()">ADD TO WATCHLIST</button>
+</div>
+<div class="card">
+<h2>My Watchlist</h2>
+<div id="stocks">No stocks added yet.</div>
+</div>
+<div class="card">
+<h2>Risk Management</h2>
+<p>Trading Capital: ₹10,000</p>
+<p>Maximum Risk Per Trade: ₹100 (1%)</p>
+<p class="small">Quantity = ₹100 ÷ (Entry − Stop Loss)</p>
+</div>
+</main>
+<footer>MY TRADING PRO © 2026</footer>
+<script>
+let stocks=JSON.parse(localStorage.getItem("stocks")||"[]");
+function show(){
+document.getElementById("stocks").innerHTML=stocks.length?stocks.map((s,i)=>`<div class="stock"><b>${s.name}</b><br>${s.setup}<br>Entry: ₹${s.entry} | SL: ₹${s.sl}<br>Quantity: ${Math.floor(100/(s.entry-s.sl))}<br><button onclick="removeStock(${i})">Remove</button></div>`).join(""):"No stocks added yet.";
+}
+function addStock(){
+let name=document.getElementById("symbol").value.trim().toUpperCase();
+let setup=document.getElementById("setup").value;
+let entry=Number(document.getElementById("entry").value);
+let sl=Number(document.getElementById("sl").value);
+if(!name||entry<=0||sl<=0||sl>=entry){alert("Please enter valid stock details and Stop Loss below Entry.");return;}
+stocks.push({name,setup,entry,sl});
+localStorage.setItem("stocks",JSON.stringify(stocks));
+show();
+document.getElementById("symbol").value="";
+document.getElementById("entry").value="";
+document.getElementById("sl").value="";
+}
+function removeStock(i){
+stocks.splice(i,1);
+localStorage.setItem("stocks",JSON.stringify(stocks));
+show();
+}
+show();
+</script>
+</body>
+</html>
