@@ -1,0 +1,13 @@
+
+{
+  "name": "My Trading Pro",
+  "short_name": "Trading Pro",
+  "description": "Personal Stock Market Scanner",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101827",
+  "theme_color": "#17243a"
+}
+
