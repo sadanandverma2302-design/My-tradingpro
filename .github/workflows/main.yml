@@ -1,0 +1,27 @@
+name: Stock Scanner Automation
+
+on:
+  schedule:
+    # Yeh har roz market hours ke baad (jaise shaam ko 4:00 PM IST) run hoga
+    - cron: '30 10 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-scanner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Run scanner script
+        run: |
+          python scanner.py
